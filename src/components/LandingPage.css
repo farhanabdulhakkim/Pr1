@@ -1,0 +1,23 @@
+.landing-page {
+    background-color: black;
+    color: red;
+    text-align: center;
+    padding: 50px;
+    height: 100vh;
+  }
+  
+  .title {
+    font-size: 48px;
+    color: red;
+    font-family: 'Georgia', serif;
+  }
+  
+  .get-started-btn {
+    padding: 15px 30px;
+    background-color: red;
+    color: white;
+    border: none;
+    font-size: 18px;
+    margin-top: 20px;
+  }
+  

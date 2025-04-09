@@ -1,0 +1,148 @@
+.upload-page {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #d9e6f2); /* Gradient background */
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  box-sizing: border-box;
+}
+
+.container {
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 15px; /* Rounded corners */
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  width: 100%;
+  max-width: 600px; /* Fixed max width */
+  text-align: center;
+  box-sizing: border-box;
+}
+
+h2 {
+  color: #e63946;
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.sub-title {
+  color: #6c757d;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.upload-container input[type="file"] {
+  display: block;
+  margin: 20px auto;
+  font-size: 16px;
+  padding: 12px;
+  border: 2px solid #e63946;
+  border-radius: 8px;
+  background-color: #ffffff;
+  cursor: pointer;
+  width: 100%;
+  max-width: 400px;
+}
+
+.upload-container input[type="file"]:hover {
+  background-color: #f1f1f1;
+}
+
+.buttons-container {
+  margin-top: 30px;
+}
+
+.action-btn {
+  background-color: #e63946;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 50px; /* Rounded button shape */
+  cursor: pointer;
+  font-size: 18px;
+  margin: 10px;
+  width: 100%;
+  max-width: 220px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.action-btn:hover {
+  background-color: #d62828;
+  transform: scale(1.05); /* Button hover animation */
+}
+
+.action-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+.spinner {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #3498db;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.response {
+  margin-top: 40px;
+  text-align: left;
+  color: #333;
+}
+
+.response pre {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 10px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 14px;
+}
+
+.error-message {
+  color: #d9534f;
+  font-size: 16px;
+  margin-top: 15px;
+}
+
+.history {
+  margin-top: 30px;
+  text-align: left;
+}
+
+.history ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.history li {
+  background-color: #f1f1f1;
+  padding: 12px;
+  margin: 5px 0;
+  border-radius: 5px;
+}
+
+.history li strong {
+  font-size: 18px;
+  color: #333;
+}
+
+.history li pre {
+  font-size: 14px;
+  color: #555;
+}
+
+.history p {
+  color: #777;
+}
