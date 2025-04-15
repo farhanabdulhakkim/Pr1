@@ -1,14 +1,17 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';  // To navigate to the next page
 import './UploadPage.css';
 
 const UploadPage = () => {
   const [file, setFile] = useState(null);
   const [numQuestions, setNumQuestions] = useState(""); // Changed to allow any number
   const [loading, setLoading] = useState(false);
-  const [responseData, setResponseData] = useState(null);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [showNumQuestionsInput, setShowNumQuestionsInput] = useState(false); // To toggle input visibility
+  const [showNumQuestionsInput, setShowNumQuestionsInput] = useState(false); // Toggle for showing number of questions input
+  const [isHighlighting, setIsHighlighting] = useState(false); // State to manage highlight process
+
+  const navigate = useNavigate(); // To navigate to the next page
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
@@ -21,11 +24,11 @@ const UploadPage = () => {
 
   const highlightText = async () => {
     if (!file) {
-      setErrorMessage('Please upload a PDF file first.');
+      setErrorMessage('Please upload a file first.');
       return;
     }
 
-    setLoading(true);
+    setIsHighlighting(true); // Mark that we are in the highlight process
     const formData = new FormData();
     formData.append('file', file);
 
@@ -36,18 +39,20 @@ const UploadPage = () => {
         },
       });
 
-      setResponseData(response.data.highlighted_text);
+      // Navigate to HighlightedPage after processing the file
+      navigate('/highlighted', { state: { highlightedText: response.data.highlighted_text } });
+
     } catch (error) {
       console.error('Error highlighting text:', error);
       setErrorMessage('Failed to highlight text. Please try again.');
     } finally {
-      setLoading(false);
+      setIsHighlighting(false); // Reset loading state
     }
   };
 
   const generateMCQs = async () => {
     if (!file) {
-      setErrorMessage('Please upload a PDF file first.');
+      setErrorMessage('Please upload a file first.');
       return;
     }
 
@@ -56,10 +61,10 @@ const UploadPage = () => {
       return;
     }
 
-    setLoading(true);
+    setLoading(true); // Mark that we are generating MCQs
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('num_questions', numQuestions); // Send the user input number of questions
+    formData.append('num_questions', numQuestions); // Send the number of questions entered by the user
 
     try {
       const response = await axios.post('http://127.0.0.1:5000/generate-mcqs', formData, {
@@ -68,17 +73,19 @@ const UploadPage = () => {
         },
       });
 
-      setResponseData(response.data.mcqs);
+      // Navigate to MCQsPage after generating MCQs
+      navigate('/mcqs', { state: { mcqs: response.data.mcqs } });
+
     } catch (error) {
       console.error('Error generating MCQs:', error);
       setErrorMessage('Failed to generate MCQs. Please try again.');
     } finally {
-      setLoading(false);
+      setLoading(false); // Reset loading state
     }
   };
 
   const handleGenerateMCQsClick = () => {
-    setShowNumQuestionsInput(true); // Show input only when user clicks "Generate MCQs"
+    setShowNumQuestionsInput(true); // Show number of questions input when user clicks "Generate MCQs"
   };
 
   return (
@@ -109,41 +116,36 @@ const UploadPage = () => {
         )}
 
         <div className="buttons-container">
+          {/* Highlight Text Button */}
           <button
             className="action-btn"
             onClick={highlightText}
-            disabled={loading}
+            disabled={loading || isHighlighting}
           >
-            {loading ? <div className="spinner"></div> : 'Highlight Text'}
+            {loading || isHighlighting ? <div className="spinner"></div> : 'Highlight Text'}
           </button>
 
+          {/* Generate MCQs Button */}
           <button
             className="action-btn"
-            onClick={handleGenerateMCQsClick} // Ask for number of questions when clicked
-            disabled={loading}
+            onClick={handleGenerateMCQsClick} // Show number of questions input when clicked
+            disabled={loading || isHighlighting}
           >
             Generate MCQs
           </button>
 
+          {/* Submit Number of Questions to generate MCQs */}
           {showNumQuestionsInput && (
             <button
               className="action-btn"
               onClick={generateMCQs} // Now calls the MCQ generation process
-              disabled={loading}
+              disabled={loading || isHighlighting}
             >
               {loading ? <div className="spinner"></div> : 'Generate Questions'}
             </button>
           )}
         </div>
 
-        <div className="response">
-          {responseData && (
-            <div>
-              <h3>Response:</h3>
-              <pre>{responseData}</pre>
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );
