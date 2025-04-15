@@ -146,3 +146,20 @@ h2 {
 .history p {
   color: #777;
 }
+/* Style for Back button */
+.back-btn {
+  background-color: #e63946;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #d62828;
+  transform: scale(1.05);  /* Button hover animation */
+}

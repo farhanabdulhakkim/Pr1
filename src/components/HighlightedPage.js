@@ -1,15 +1,15 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './HighlightedPage.css';  // Make sure to create a CSS file for styling
+import './HighlightedPage.css';  // Make sure to import the CSS file
 
 const HighlightedPage = () => {
   const { state } = useLocation();
-  const { highlightedText } = state || { highlightedText: 'No highlighted text generated.' }; // Get the highlighted text or a default message
-  const navigate = useNavigate();  // Initialize navigate hook
+  const { highlightedText } = state || { highlightedText: 'No highlighted text generated.' };
+  const navigate = useNavigate();
 
-  // Function to handle back button click
+  // Function to go back to the previous page
   const handleBack = () => {
-    navigate(-1);  // Go back to the previous page
+    navigate(-1);  // Go back to the previous page without refreshing the file or state
   };
 
   return (
