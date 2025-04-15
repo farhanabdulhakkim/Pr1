@@ -1,28 +1,28 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';  // To navigate to the next page
+import { useNavigate } from 'react-router-dom';
 import './UploadPage.css';
 
 const UploadPage = () => {
   const [file, setFile] = useState(null);
-  const [numQuestions, setNumQuestions] = useState(""); // Changed to allow any number
+  const [numQuestions, setNumQuestions] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
-  const [showNumQuestionsInput, setShowNumQuestionsInput] = useState(false); // Toggle for showing number of questions input
-  const [isHighlighting, setIsHighlighting] = useState(false); // State to manage highlight process
-  const [generateMCQsClicked, setGenerateMCQsClicked] = useState(false); // State to check if MCQs generation button is clicked
+  const [showNumQuestionsInput, setShowNumQuestionsInput] = useState(false);
+  const [isHighlighting, setIsHighlighting] = useState(false);
+  const [generateMCQsClicked, setGenerateMCQsClicked] = useState(false);
 
-  const navigate = useNavigate(); // To navigate to the next page
+  const navigate = useNavigate();
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
-    setErrorMessage(null); // Reset error when a new file is selected
-    setGenerateMCQsClicked(false); // Reset the MCQs click state when a new file is selected
-    setShowNumQuestionsInput(false); // Reset number of questions input visibility
+    setErrorMessage(null);
+    setGenerateMCQsClicked(false);
+    setShowNumQuestionsInput(false);
   };
 
   const handleNumQuestionsChange = (e) => {
-    setNumQuestions(e.target.value); // Change the number of questions based on user input
+    setNumQuestions(e.target.value);
   };
 
   const highlightText = async () => {
@@ -31,7 +31,7 @@ const UploadPage = () => {
       return;
     }
 
-    setIsHighlighting(true); // Mark that we are in the highlight process
+    setIsHighlighting(true);
     const formData = new FormData();
     formData.append('file', file);
 
@@ -42,14 +42,12 @@ const UploadPage = () => {
         },
       });
 
-      // Navigate to HighlightedPage after processing the file
       navigate('/highlighted', { state: { highlightedText: response.data.highlighted_text } });
-
     } catch (error) {
       console.error('Error highlighting text:', error);
       setErrorMessage('Failed to highlight text. Please try again.');
     } finally {
-      setIsHighlighting(false); // Reset loading state
+      setIsHighlighting(false);
     }
   };
 
@@ -64,10 +62,10 @@ const UploadPage = () => {
       return;
     }
 
-    setLoading(true); // Mark that we are generating MCQs
+    setLoading(true);
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('num_questions', numQuestions); // Send the number of questions entered by the user
+    formData.append('num_questions', numQuestions);
 
     try {
       const response = await axios.post('http://127.0.0.1:5000/generate-mcqs', formData, {
@@ -76,24 +74,22 @@ const UploadPage = () => {
         },
       });
 
-      // Navigate to MCQsPage after generating MCQs
       navigate('/mcqs', { state: { mcqs: response.data.mcqs } });
-
     } catch (error) {
       console.error('Error generating MCQs:', error);
       setErrorMessage('Failed to generate MCQs. Please try again.');
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
   const handleGenerateMCQsClick = () => {
-    setGenerateMCQsClicked(true); // Set the flag to true when Generate MCQs is clicked
-    setShowNumQuestionsInput(true); // Show number of questions input when user clicks "Generate MCQs"
+    setGenerateMCQsClicked(true);
+    setShowNumQuestionsInput(true);
   };
 
   const handleBackClick = () => {
-    navigate(-1); // Go back to the previous page
+    navigate(-1);
   };
 
   return (
@@ -102,7 +98,6 @@ const UploadPage = () => {
         <h2>InkBlaze</h2>
         <p className="sub-title">Upload Your PDF and Choose an Action</p>
 
-        {/* Back Button */}
         <button className="back-btn" onClick={handleBackClick}>
           &larr; Back
         </button>
@@ -113,7 +108,6 @@ const UploadPage = () => {
 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
 
-        {/* Show number of questions input only when the "Generate MCQs" button is clicked */}
         {showNumQuestionsInput && (
           <div className="questions-container">
             <label htmlFor="numQuestions">Number of Questions:</label>
@@ -129,40 +123,36 @@ const UploadPage = () => {
         )}
 
         <div className="buttons-container">
-          {/* Highlight Text Button - Only visible if MCQs generation is not clicked */}
           {!generateMCQsClicked && (
-            <button
-              className="action-btn"
-              onClick={highlightText}
-              disabled={loading || isHighlighting}
-            >
-              {loading || isHighlighting ? <div className="spinner"></div> : 'Highlight Text'}
-            </button>
+            <>
+              <button
+                className="action-btn"
+                onClick={highlightText}
+                disabled={loading || isHighlighting}
+              >
+                {loading || isHighlighting ? <div className="spinner"></div> : 'Highlight Text'}
+              </button>
+
+              <button
+                className="action-btn"
+                onClick={handleGenerateMCQsClick}
+                disabled={loading || isHighlighting}
+              >
+                Generate MCQs
+              </button>
+            </>
           )}
 
-          {/* Generate MCQs Button - Only visible if MCQs generation is not clicked */}
-          {!generateMCQsClicked && (
-            <button
-              className="action-btn"
-              onClick={handleGenerateMCQsClick} // Show number of questions input when clicked
-              disabled={loading || isHighlighting}
-            >
-              Generate MCQs
-            </button>
-          )}
-
-          {/* Submit Number of Questions to generate MCQs - Only visible when number of questions input is shown */}
           {showNumQuestionsInput && (
             <button
               className="action-btn"
-              onClick={generateMCQs} // Now calls the MCQ generation process
+              onClick={generateMCQs}
               disabled={loading || isHighlighting}
             >
               {loading ? <div className="spinner"></div> : 'Generate Questions'}
             </button>
           )}
         </div>
-
       </div>
     </div>
   );

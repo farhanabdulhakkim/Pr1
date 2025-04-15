@@ -1,64 +1,105 @@
+/* General styling for the page */
 .upload-page {
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #f0f4f8, #d9e6f2); /* Gradient background */
+  background: url('../assets/flat-mountains.png') no-repeat center center fixed;
+  background-size: cover;
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 40px;
   box-sizing: border-box;
+  color: #ffffff;
 }
 
+/* Container for all content */
 .container {
-  background-color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.6); /* semi-transparent dark */
   padding: 40px;
-  border-radius: 15px; /* Rounded corners */
-  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
   width: 100%;
-  max-width: 600px; /* Fixed max width */
+  max-width: 600px;
   text-align: center;
   box-sizing: border-box;
 }
 
+/* Header styling */
 h2 {
-  color: #e63946;
+  color: #ffe66d;
   font-size: 36px;
   margin-bottom: 10px;
 }
 
 .sub-title {
-  color: #6c757d;
+  color: #f8f9fa;
   font-size: 18px;
   margin-bottom: 20px;
 }
 
+/* Back button */
+.back-btn {
+  background-color: transparent;
+  border: 2px solid #ffe66d;
+  color: #ffe66d;
+  padding: 10px 20px;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background-color: #ffe66d;
+  color: #000;
+}
+
+/* Input field styling for file upload */
 .upload-container input[type="file"] {
   display: block;
   margin: 20px auto;
   font-size: 16px;
   padding: 12px;
-  border: 2px solid #e63946;
+  border: 2px solid #ffe66d;
   border-radius: 8px;
   background-color: #ffffff;
   cursor: pointer;
   width: 100%;
   max-width: 400px;
+  color: #000;
 }
 
 .upload-container input[type="file"]:hover {
   background-color: #f1f1f1;
 }
 
+/* Number of questions input */
+.questions-container {
+  margin-top: 20px;
+  color: #ffffff;
+}
+
+.questions-container input {
+  padding: 10px;
+  margin-top: 10px;
+  font-size: 16px;
+  border: 2px solid #ffe66d;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 300px;
+}
+
+/* Buttons styling */
 .buttons-container {
   margin-top: 30px;
 }
 
 .action-btn {
-  background-color: #e63946;
-  color: white;
+  background-color: #ffe66d;
+  color: #000;
   padding: 15px 30px;
   border: none;
-  border-radius: 50px; /* Rounded button shape */
+  border-radius: 50px;
   cursor: pointer;
   font-size: 18px;
   margin: 10px;
@@ -68,18 +109,19 @@ h2 {
 }
 
 .action-btn:hover {
-  background-color: #d62828;
-  transform: scale(1.05); /* Button hover animation */
+  background-color: #ffd60a;
+  transform: scale(1.05);
 }
 
 .action-btn:disabled {
-  background-color: #ccc;
+  background-color: #999;
   cursor: not-allowed;
 }
 
+/* Loading spinner styling */
 .spinner {
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #3498db;
+  border-top: 4px solid #ffe66d;
   border-radius: 50%;
   width: 20px;
   height: 20px;
@@ -95,71 +137,58 @@ h2 {
   }
 }
 
-.response {
-  margin-top: 40px;
-  text-align: left;
-  color: #333;
-}
-
-.response pre {
-  background-color: #f9f9f9;
-  padding: 15px;
-  border-radius: 10px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  font-size: 14px;
-}
-
+/* Error message styling */
 .error-message {
-  color: #d9534f;
+  color: #ff6b6b;
   font-size: 16px;
   margin-top: 15px;
 }
 
-.history {
+/* PDF preview styling */
+.pdf-preview {
   margin-top: 30px;
   text-align: left;
+  color: #ffffff;
 }
 
-.history ul {
-  list-style-type: none;
-  padding-left: 0;
-}
-
-.history li {
-  background-color: #f1f1f1;
-  padding: 12px;
-  margin: 5px 0;
-  border-radius: 5px;
-}
-
-.history li strong {
+.pdf-preview h4 {
   font-size: 18px;
-  color: #333;
+  margin-bottom: 10px;
 }
 
-.history li pre {
-  font-size: 14px;
-  color: #555;
+.pdf-preview iframe {
+  width: 100%;
+  height: 500px;
+  border: 2px solid #ffe66d;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  animation: fadeIn 1.5s ease-out;
 }
 
-.history p {
-  color: #777;
-}
-/* Style for Back button */
-.back-btn {
-  background-color: #e63946;
-  color: white;
-  padding: 12px 24px;
-  border: none;
-  border-radius: 50px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-top: 20px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+/* Fade-in animation for images and PDFs */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-.back-btn:hover {
-  background-color: #d62828;
-  transform: scale(1.05);  /* Button hover animation */
+/* Responsive styling for smaller screens */
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  .action-btn {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .pdf-preview iframe {
+    height: 400px;
+  }
 }
