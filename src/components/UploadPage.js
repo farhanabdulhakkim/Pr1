@@ -5,6 +5,7 @@ import './UploadPage.css';
 
 const UploadPage = () => {
   const [file, setFile] = useState(null);
+  const [fileURL, setFileURL] = useState(null);
   const [numQuestions, setNumQuestions] = useState("");
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
@@ -15,10 +16,16 @@ const UploadPage = () => {
   const navigate = useNavigate();
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-    setErrorMessage(null);
-    setGenerateMCQsClicked(false);
-    setShowNumQuestionsInput(false);
+    const uploadedFile = e.target.files[0];
+    if (uploadedFile && uploadedFile.type === 'application/pdf') {
+      setFile(uploadedFile);
+      setFileURL(URL.createObjectURL(uploadedFile)); // Create preview URL
+      setErrorMessage(null);
+      setGenerateMCQsClicked(false);
+      setShowNumQuestionsInput(false);
+    } else {
+      setErrorMessage('Only PDF files are supported.');
+    }
   };
 
   const handleNumQuestionsChange = (e) => {
@@ -37,9 +44,7 @@ const UploadPage = () => {
 
     try {
       const response = await axios.post('http://127.0.0.1:5000/highlight-text', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       navigate('/highlighted', { state: { highlightedText: response.data.highlighted_text } });
@@ -69,9 +74,7 @@ const UploadPage = () => {
 
     try {
       const response = await axios.post('http://127.0.0.1:5000/generate-mcqs', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
+        headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       navigate('/mcqs', { state: { mcqs: response.data.mcqs } });
@@ -103,10 +106,23 @@ const UploadPage = () => {
         </button>
 
         <div className="upload-container">
-          <input type="file" onChange={handleFileChange} />
+          <input type="file" accept="application/pdf" onChange={handleFileChange} />
         </div>
 
         {errorMessage && <p className="error-message">{errorMessage}</p>}
+
+        {fileURL && (
+          <div className="pdf-preview">
+            <h4>PDF Preview</h4>
+            <iframe
+              src={fileURL}
+              title="PDF Preview"
+              width="100%"
+              height="500px"
+              style={{ border: '1px solid #ccc', borderRadius: '8px' }}
+            ></iframe>
+          </div>
+        )}
 
         {showNumQuestionsInput && (
           <div className="questions-container">
